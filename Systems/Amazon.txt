@@ -1,0 +1,11 @@
+==> FR - search
+        - cart/wishlist
+        - checkout
+        - view orders
+
+==> NFR - low latency
+    - high available
+    - hihg consistency
+
+==============================================================================================================================
+

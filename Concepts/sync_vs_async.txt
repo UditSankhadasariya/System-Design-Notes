@@ -1,0 +1,26 @@
+==> synchronous - request is made is awaited until we get a response.
+        - it is blocking in nature.
+        - take eg of social media if like, comment service is integrating with notification service, than when user likes or comments than it will hit interationg service which will contact notification service and everything would be blcking in nature.
+        - this flow gaurantees completeness.
+        - pros - communication is real time and implementation is simple and intuitive.
+        - cons - the caller is bloacked until repsonse is processed compleely, srever needs to be proactively provisioned to handle peaks, risk of cascading failures.(to mitigate this we have circuit breakers.)
+
+
+==> async communication - will basically have some broker in middle to handle the comunication. 
+    pros - services doesnt need to wait for the response.
+            - system can handle surges and spikes pretty well.
+            - no need to proactively scale.
+            - no request drop or data loss.
+            - better control over failures.
+    cons - eventual consistent(introducing delays in system)            
+        - broker would be single point of failure
+    usecase- when dealy is okay - notifications,reporting ,analytics etc.
+        - when the job is long running.(provisiong server EC2, order tracking, uploading videos etc.)
+        - when multiple services need to react to some event. just like see in code karle videos (kafka usage).
+        - when it is okay for you to fail and retry
+        
+
+==>msg queuq could be a good way to decouple two components and have an sync communiation between them.
+==> there is another pattern pub-sub pattern.
+    - we would have a group of users where we want send targeted msgs. and one person can be in multiple groups as well
+    - this is an example of a topic.

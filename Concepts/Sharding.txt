@@ -1,0 +1,50 @@
+==> there is limit to vertical scaling of a database, you cannot pass a certain limit.
+
+==>there 2 ways veritcal paritioning and horizontal paritioning. vertical is basically paritiioning based on clumns, like grouping columns in shards.
+- second is horizontal paritiioning based on rows, this is basically called sharding.
+
+ ==> we can have logical shards or physical shards. and a good complex sharded db can have combination of both the techniques.
+- partition in Bigquery was basically logical sharding
+
+ ==>partitions can be grouped in sets of dbs. so physical shards would be the different dbs. and logical shards would be the partitions that part of the same DB.
+
+ ==> PROS - storage not possible hence we need to parittioon and create shards.
+        -  if we only have one single DB, computatino would be costly as it would have to go through all the rows
+        - we can place these shards in different geographical locations, this could reduce latency and computer power.
+        - no single point of failure
+
+==> types - algo sharding and dynamic sharding
+        - algo sharding - our server knows which shard to point to and requests to only that particular shard.
+        - dynamic - there would be a separet service which would help us evaluate the shard to contact(in here the shards can be changed hence dynamic)
+
+==> CONS - a bad sharding startegy could ruin your performace, the kwy shoudl be very smartly chosen.(it should have effctive distribution)
+    - if we need to aggregate or join the data from diff shards, that can be very costly.
+    - sharding is complex hence try all approcahes first caching, scaling, indexing , query optimisations etc.     
+
+
+==> sharding strategies: 
+    -> Key bases sharding - we will decide a shard key(this is different concept ,not same as primary key). we will pass this shard key through a hash function which will give us our desired shard.
+    - beneift of this is the application server will itslef know which shard to hit to(algo based sharding).
+    - another advantage is even distribution of the load.
+    CONS
+    - if a new shard is to be added or removed the hash fuction will change, and the data also needs to be reoeganised in the shards.
+    - in key based sharding the key has to be static, it should not be very dynamic in nature.
+    - we can choos combination of keys as well as shard keys.
+
+    -> RANGE BASED SHARDING - we can create shards based on range conditions on ids, months dates,prices etc.
+    advantage - if new shard is added an new range would be created and existing ones wontt be impacted(only some would be impacted).
+    CONS - since this is data dependent it can have uneven distribution of data(if some range has alot of data.) and this will create hotspots.
+
+    -> Directory based sharding - dynamic sharding startegy.
+        - the sharding info(look table) wil de coupled and server will contact this to know the appropriae shard to contact.
+        - with this approch if new shard needs to be added it would be just addition of row in lookup table abd same for removal.
+        - CON is same as range based sharding
+        - also extra call needs to be made to know th shard for each and every r/w.
+        - single point of failure.
+
+==> we shard the databse and we partition the data. different paritions can exists in the same DB or diffferent shards depending on the use case.
+
+
+
+
+        

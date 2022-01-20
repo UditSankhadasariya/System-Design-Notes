@@ -1,0 +1,39 @@
+==> lets say we have static files like html in a server which the users request.
+
+==> to make this efficient first thing is to cache this sta8ic content in teh server. but since all of the clients would be connecting to this single cache instance, it acts as a single point of failure.
+
+==> to avoid above problem we can use distributed cache. also inorder to have best performance we shard using location, so request from specific cpountries will go to only specific shard.
+
+==> The abiove solutions are valid but the only problem can be the actual physical distance between the server and the client.
+SO WE CAN HAVE these cahe instances in each country based on there usecases.
+
+==> All the above solutions are good , but they are difficult to inplemente manually thats were cdn comes in it does all the above funationality out of the box.
+
+==> AKAMAI - specialised cdn solution.
+    Takes care of 
+    - hosting boxes close to the users.
+    - follow the regulations 
+    - allow posting content in the boxes via UI(UI which the devloper can intercta with and setup the cdn with settings on how the dat shoudl be pulled from the actual server.)
+    - we can customise the time to live in these boxes(eg 30 mins).
+    - cahce invalidatino is taken care of by cdn(if data not found hit the server).
+
+==> another famous CDN is amzon S3, and cloudfront
+
+
+some more info
+A content delivery network (CDN) is a group of geographically distributed servers that speed up the delivery of web content by bringing it closer to where users are. Data centers across the globe use caching, a process that temporarily stores copies of files, so that you can access internet content from a web-enabled device or browser more quickly through a server near you. CDNs cache content like web pages, images, and video in proxy servers near to your physical location. This allows you to do things like watch a movie, download software, check your bank balance, post on social media, or make purchases, without having to wait for content to load.
+
+You could think of a CDN like an ATM. Having a cash machine on practically every corner makes it fast and efficient to get money. There’s no wait time in long bank lines, and the ATMs are placed in many convenient locations for immediate access.
+
+CDNs have now grown to include everything from text, graphics, scripts, and media files to software downloads, documents, portals, ecommerce, live streaming media, on-demand video streaming media, and social media sites.
+
+The media files will be cached and remain on that content delivery network server for other user requests in the same geographic area. If the content you requested is unavailable or outdated, the CDN service will store the newly fetched content to serve any future requests.
+
+CDNs deliver a wide variety of content that includes: 4K and HD-quality video, audio streams, software downloads such as apps, games, and OS updates, and much more. Potentially any data that can be digitized can be delivered through a content delivery network.
+
+ Using a content delivery network can also improve web security, for instance by helping to absorb and mitigate a distributed denial-of-service (DDoS) attack.
+
+ High availability -  The widely distributed server infrastructure offered by CDNs is designed to alleviate these issues. Advanced CDNs, with their highly distributed architecture and massive server platforms, can absorb tens of Tbps of traffic and make it possible for content providers to stay available to even larger user bases.
+
+ Akamai has an unmatched global network capacity of 300+ Tbps and is unparalleled at scale with over 4,200 locations and upwards of 1,400 networks that span 135 countries. With the largest edge delivery platform, we see more of what’s happening on the internet. This means we can deftly avoid bottlenecks and defend at the edge. 
+

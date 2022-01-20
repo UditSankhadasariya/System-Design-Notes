@@ -1,0 +1,26 @@
+==> widely adopted to do intercommunication between internal services.
+
+==> It abstracts it to just look like a function between different services.
+
+==> intercommunication can simply be handled by rest requests
+
+==> the main goal is to abstract all the details like what protocol, retries , compression and all other stuff required in intercommunication.
+
+==> Eg auth service might require to send OTP, which can be part of another service. this communication can be handled by RPC.
+Stub is kind of intermediatory which helps this communication wherein it will serialise the object while back and forth communication.
+
+The objects and everything is handled by stub itself, for eg if golang backend send obj than it is serialised and send, and the recieving service in java will have its own stub which will convert into java's class type. 
+
+==> Implementation of Stub.
+    - since services can be of there own types, there should be a common interface type where we can define the schema of the object.
+    - This is called stub interface description language.
+    - each rpc system has its own format. The famous one currently is gRPC.
+    - it is called protoBuff format. It has things like service, methodName, and the message schema.
+    - this is same as yaml in docker. so this proto file will be fed to a stub generator and it would spit out the complete logic in whatever language you wannt(with failures, retries etc.)...we just have to implement the unimplemented method.
+    - the underlying network call can be implemnted using any protocols. TCP/UDP. GRPC uses http/2 as the transport layer.
+
+==> why rpc
+    - Easy to use in strong API contract
+    - performance out of the box
+        - compression, multiplexing, efficient payload,connection pool, streaming    
+        

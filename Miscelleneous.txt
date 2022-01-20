@@ -1,0 +1,6 @@
+==> whenever we have microservice architecture, think of the use case of each and every service. we can have an hybrid model consisting of kube clusters,ec2's lambda's etc.. so think of an hybrid model for each and and every service to get max performance at least cost.
+
+
+==> Webview a small webpage which can be embedded in apps. eg swiggy chatbot page. if there are incremental updates in page, insteading of shipping a new apk just update the webview page from backend.
+
+==> while discussin gin the interview always say that the design would go incrementally after doing all the profiling, benchmark, load testing etc.

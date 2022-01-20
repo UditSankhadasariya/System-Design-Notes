@@ -1,0 +1,186 @@
+TCP vs UDP
+TCP (Transmission Control Protocol) and UDP (User Datagram Protocol) are both communication protocols used for sending data over a network.
+
+TCP is a more reliable protocol as it establishes a connection between two devices before sending data, and it also checks for errors and resends any lost or corrupt data. This makes it a good choice for applications that need to ensure that all the data is received, such as file transfers or online chats.
+
+UDP, on the other hand, does not establish a connection before sending data, and it also does not check for errors or resend lost data. This makes it a faster protocol, but less reliable. It is often used for applications that can handle some lost data, such as online gaming or streaming video.
+
+In simple terms, TCP is like a phone call where you talk to the person and confirm that the message was received, while UDP is like a text message where you send it and don't know if it was received.
+
+Here are some examples of common applications that use TCP and UDP:
+
+TCP:
+
+HTTP (Hypertext Transfer Protocol) - the protocol used to transfer web pages and other data over the internet
+FTP (File Transfer Protocol) - the protocol used to transfer files between computers
+SSH (Secure Shell) - a protocol used to securely connect to and control remote servers
+SMTP (Simple Mail Transfer Protocol) - the protocol used to send and receive email
+UDP:
+
+DNS (Domain Name System) - the protocol used to translate domain names (like www.example.com) into IP addresses
+DHCP (Dynamic Host Configuration Protocol) - the protocol used to assign IP addresses to devices on a network
+RTP (Real-time Transport Protocol) - the protocol used to stream audio and video over the internet
+Video games, VoIP (Voice over IP) like Skype, Zoom etc.
+It's worth noting that some applications may use both protocols. For example, streaming video may use UDP to stream the video data, but use TCP to control the stream and ensure that the video player is receiving all the data.
+
+==============================================================================================================================
+PROS AND CONS
+
+When designing a system, the choice between TCP and UDP depends on the specific requirements and constraints of the application.
+
+If the application requires that all data be received and that data integrity is maintained, then TCP is the better choice. Examples of such applications are file transfers, online chats and online backups. In these cases, the reliability and error correction provided by TCP are more important than the speed provided by UDP.
+
+On the other hand, if the application can tolerate some lost data or if low latency is more important than data integrity, then UDP is the better choice. Examples of such applications are real-time video and audio streaming, online gaming, and some IoT applications. In these cases, the speed and low overhead provided by UDP are more important than the reliability provided by TCP.
+
+Additionally, another factor to consider is the number of clients that the system will need to handle. In cases where the system will be handling a large number of clients, UDP is often the better choice because it has lower overhead than TCP.
+
+In short, choosing between TCP and UDP depends on the specific needs of the application and the trade-offs between reliability, speed, and overhead. A good practice is to start by evaluating the requirements and constraints of the application, and then select the protocol that best meets those needs.
+
+
+
+==============================================================================================================================
+RTP protocol
+
+RTP (Real-time Transport Protocol) is a communication protocol that is used to transmit audio and video data over a network in real-time. It is typically used in combination with another protocol called RTCP (Real-time Transport Control Protocol) that is used to monitor and control the quality of the RTP stream.
+
+RTP is built on top of UDP, which means it does not establish a connection before sending data and it does not check for errors or resend lost data. This makes it a fast protocol, but less reliable. Because of this, RTP is often used for applications that can tolerate some lost data, such as live video and audio streaming, online gaming, and some VoIP (Voice over IP) applications like Skype and Zoom.
+
+RTP provides several features that are designed to make it well-suited for real-time streaming applications. These include:
+
+Sequence numbering: RTP packets are numbered in sequence, which allows the receiver to detect and correct any out-of-order packets.
+Timestamping: RTP packets include a timestamp that indicates the time when the packet was generated, which allows the receiver to synchronize the audio and video streams.
+Payload type identification: RTP packets include a header that identifies the type of data that is included in the packet, which allows the receiver to handle different types of data (e.g. audio, video) differently.
+Marker bit: RTP packets include a marker bit that indicates the start of a new video frame or audio packet which is useful for decoding of the video or audio stream.
+RTCP, on the other hand, is used to monitor the quality of the RTP stream. RTCP sends control packets to the sender and receiver that contain information about the quality of the RTP stream, such as the number of packets that were lost or the jitter (variation in delay) of the stream. This information can be used to adjust the quality of the stream in real-time.
+
+==============================================================================================================================
+UDP CONNECTION LESS PROTOCOL
+
+In UDP, there is no formal process for establishing a connection between two devices before sending data. Unlike TCP, which uses a three-way handshake process to establish a connection, UDP simply sends packets of data directly to the recipient's IP address and port number.
+
+The sender can start sending UDP packets to the recipient as soon as it knows the recipient's IP address and port number. The recipient, in turn, can start receiving UDP packets as soon as it has bound to a specific port number on its IP address. This makes UDP a connectionless protocol, as there is no formal process for establishing a connection before sending data.
+
+This absence of connection establishment process in UDP allows for faster data transfer but also means that if data is lost or corrupted, it won't be retransmitted, and it's up to the application to handle the loss of data. Additionally, the sender won't know if the recipient is ready to receive data or not.
+
+To summarize, in UDP, there is no need for devices to establish a connection before sending data, and devices can start sending and receiving data immediately. This makes it a faster protocol but less reliable compared to TCP, which establishes a connection before sending data and also checks for errors and resends any lost or corrupt data.
+
+
+==============================================================================================================================
+TCP EXPLANATION
+
+-> Handshaking
+The three-way handshake process in TCP (Transmission Control Protocol) is a method used to establish a reliable, connection-oriented communication between two devices. It consists of three steps:
+
+The initiating device (the client) sends a "synchronize" (SYN) packet to the receiving device (the server) to request that a connection be established.
+
+The receiving device (the server) receives the SYN packet and sends back a "synchronize-acknowledgment" (SYN-ACK) packet to the initiating device (the client) to acknowledge receipt of the SYN packet and to indicate that it is ready to establish a connection.
+
+The initiating device (the client) receives the SYN-ACK packet and sends back an "acknowledgment" (ACK) packet to the receiving device (the server) to confirm that it has received the SYN-ACK packet and that the connection is established.
+
+This process is also called as SYN-SYN-ACK process.
+
+Once the three-way handshake process is complete, the devices are considered to be connected and can begin to exchange data. The connection remains open until one of the devices sends a "finish" (FIN) packet to the other device to indicate that it wants to close the connection. The other device then sends back an ACK packet to confirm that it has received the FIN packet, and the connection is closed. This process is known as four-way handshake process.
+
+The three-way handshake process in TCP is reliable because it establishes a connection before sending data, and both devices confirm that the connection is established before any data is exchanged. This ensures that data is not lost or corrupted in transit and that both devices are ready to communicate.
+
+--> Data reliability
+TCP (Transmission Control Protocol) uses several methods to ensure that data is not lost or corrupted in transit:
+
+Acknowledgments: After a device sends a packet of data to the other device, it waits for an acknowledgment (ACK) packet to be returned before sending the next packet. If the device doesn't receive an ACK packet within a certain amount of time, it will resend the packet. This ensures that the data is received and that any lost or corrupted packets are retransmitted.
+
+Flow control: TCP uses a mechanism called flow control to ensure that the sender does not overwhelm the receiver with too much data. The receiver sends a window size value to the sender, which is the maximum amount of data that the receiver is able to receive at any given time. The sender can only send data up to the window size value and must wait for the receiver to send an updated window size before sending more data.
+
+Error checking: TCP uses a checksum to detect errors in the data. The sender calculates a checksum for each packet of data and sends it along with the packet. The receiver then calculates the checksum for the received packet and compares it to the sent checksum. If the checksums don't match, the packet is considered corrupted and is discarded.
+
+Congestion control: TCP uses a mechanism called congestion control to ensure that the network is not overwhelmed with too much data. If the network becomes congested and packets are being lost, TCP will slow down the rate at which it sends data. It will wait longer before sending the next packet and will also reduce the size of the window size to reduce the amount of data in transit.
+
+In summary, TCP uses a combination of acknowledgments, flow control, error checking, and congestion control to ensure that data is not lost or corrupted in transit. This makes it a reliable protocol for applications that require that all data be received, such as file transfers or online chats.
+
+
+==============================================================================================================================
+FTP 
+
+FTP (File Transfer Protocol) is a standard network protocol used to transfer files between computers on a network. It allows for the transfer of files from a server to a client or from a client to a server over a TCP-based network, such as the internet.
+
+FTP is a client-server protocol, which means that one device (the client) initiates a connection to another device (the server) and requests to transfer a file. The server then sends the requested file to the client.
+
+FTP uses two channels to transfer files: the control channel and the data channel. The control channel is used to establish the connection and to exchange commands and replies between the client and the server. The data channel is used to transfer the actual file.
+
+FTP supports several types of file transfer, including binary and ASCII, which are used for different types of files. Binary mode is used to transfer executable files, image files, and compressed files. ASCII mode is used to transfer text files.
+
+FTP also supports several authentication methods, including anonymous login (no login required) and username and password login. Additionally, FTP can be configured to use Secure File Transfer Protocol (SFTP) which is an extension of the SSH (Secure Shell) protocol, which provides a more secure way to transfer files.
+
+FTP is widely used in organizations and companies to transfer files between servers and clients, and also to transfer files between servers. It's simple and easy to use, but it lacks security features like encryption, which makes it less secure than other file transfer protocols like SFTP.
+
+SFTP (Secure File Transfer Protocol) is an extension of the SSH (Secure Shell) protocol that provides a secure way to transfer files between computers. It is similar to FTP (File Transfer Protocol), but it uses an encrypted connection to transfer files, making it more secure than FTP.
+
+Like FTP, SFTP is a client-server protocol, which means that one device (the client) initiates a connection to another device (the server) and requests to transfer a file. The server then sends the requested file to the client.
+
+In SFTP, both the control and the data channels are encrypted, so the files and the commands passed between the client and the server are protected from unauthorized access and tampering.
+
+SFTP also supports several authentication methods, including username and password login, and public-key authentication. Public-key authentication is considered to be more secure than username and password authentication, as it does not require to transmit the user's password over the network.
+
+SFTP is widely used in organizations and companies to transfer files between servers and clients, and also to transfer files between servers in a secure way. Because SFTP uses SSH, it can be integrated with other SSH features like terminal access and port forwarding, making it a versatile and secure protocol for file transfer.
+
+In summary, SFTP is a secure file transfer protocol that is an extension of the SSH protocol, it uses an encrypted connection to transfer files, and it supports several authentication methods, making it a more secure alternative to FTP.
+
+==============================================================================================================================
+
+SSH protocol
+
+SSH (Secure Shell) is a network protocol that provides a secure way to remotely access and manage network devices. It is widely used to securely connect to and control remote servers, network devices, and other systems.
+
+SSH provides a secure and encrypted connection between two devices, usually a client and a server. It allows the client to authenticate itself to the server, and then establishes a secure, encrypted "shell" session between the two devices. This session can be used to run commands, transfer files, or access a command-line interface on the remote device.
+
+The main feature of SSH is its ability to encrypt all the data passed between the client and the server, including the login credentials and the commands. This provides a secure and private communication channel, even when the data is passing through an insecure network.
+
+SSH uses public-key cryptography for authentication and for encrypting the data. The server has a public key and a private key, and the client has a copy of the server's public key. The client uses the server's public key to encrypt the data, and the server uses its private key to decrypt the data.
+
+SSH is commonly used in a variety of different scenarios, such as:
+
+Remote server administration: SSH allows system administrators to remotely access and manage servers, configure settings, and run commands.
+Secure file transfer: SSH includes a file transfer protocol called SFTP (Secure File Transfer Protocol) that allows for secure file transfers between two devices.
+Port forwarding: SSH allows to forward a local port to a remote port on a remote device, essentially creating a secure tunnel through an insecure network.
+In summary, SSH is a secure network protocol that provides a secure way to remotely access and manage network devices, it uses public-key cryptography to authenticate and encrypt the data passed between the client and the server, and it's widely used for remote server administration, secure file transfer and port forwarding.
+
+==============================================================================================================================
+HTTP - DASH
+
+HTTP-DASH, also known as Dynamic Adaptive Streaming over HTTP (DASH) is a protocol for streaming video and audio over the internet. It is similar to HTTP (Hypertext Transfer Protocol) in that it uses the same underlying transport protocol (TCP) and the same basic structure for requests and responses. However, unlike HTTP, DASH uses a dynamic, adaptive streaming method to deliver the video and audio content.
+
+With DASH, the video is divided into small segments and encoded at different bit rates. The client, such as a video player, can then request the segments from the server and adapt the bitrate of the video in real-time based on the available network conditions. This allows DASH to provide a high-quality video streaming experience even on networks with varying bandwidth.
+
+DASH uses a set of technologies to accomplish this, such as:
+
+MPD (Media Presentation Description): A XML file which describes the video content, its segments, and the different bit rates available.
+Representations: The segments of the video that are encoded at different bit rates.
+Adaptation logic: The algorithm used by the client to select the appropriate representation based on the network conditions.
+DASH is an open standard and it's supported by a wide range of devices and platforms, including web browsers, mobile devices, smart TVs, and streaming devices. It's widely used in video streaming services such as Netflix, YouTube, and many others.
+
+In summary, HTTP-DASH is a protocol for streaming video and audio over the internet, it's similar to HTTP but uses a dynamic, adaptive streaming method to deliver the video and audio content, and it's widely used in video streaming services.
+==============================================================================================================================
+
+
+WebRTC (Web Real-Time Communication) is a collection of technologies and APIs that enable real-time communication capabilities in web browsers and other applications. It allows audio and video communication to work directly between browsers, without the need for a plugin or an intermediary server.
+
+WebRTC includes several key APIs and technologies, such as:
+
+RTCPeerConnection: This API allows web browsers to communicate directly with each other, without the need for a central server. It enables the creation of a peer-to-peer connection between two browsers and allows them to exchange audio and video data in real-time.
+
+RTCDataChannel: This API allows for the creation of a peer-to-peer data channel between two browsers, allowing them to exchange arbitrary data in real-time.
+
+MediaStream API: This API allows web applications to access the audio and video input devices of a user, such as a microphone and a camera, and to stream the data to a peer-to-peer connection.
+
+WebRTC is supported by most modern web browsers, including Chrome, Firefox, Safari, and Edge, which makes it a widely used platform for real-time communication and interactive web applications. It's used in a variety of applications, including video conferencing, online gaming, and live streaming.
+
+In summary, WebRTC (Web Real-Time Communication) is a collection of technologies and APIs that enable real-time communication capabilities in web browsers and other applications, it allows audio and video communication to work directly between browsers, without the need for a plugin or an intermediary server, and it's supported by most modern web browsers.
+
+One common use case of WebRTC is in video conferencing and web-based meeting applications. WebRTC's real-time audio and video capabilities allow for high-quality, low-latency communication between participants in a meeting, regardless of their location. Applications like Zoom, Google Meet, and Microsoft Teams, all use WebRTC to enable real-time audio and video communication.
+
+Another use case of WebRTC is in live streaming applications. WebRTC's low-latency and real-time capabilities allow for a seamless and interactive live streaming experience for the users. Applications like Facebook Live, Twitch, and YouTube Live use WebRTC to enable real-time streaming capabilities.
+
+WebRTC is also used in online gaming, by enabling real-time communication between players in a game. This allows players to interact with each other in real-time, and improves the overall gaming experience.
+
+Another use case of WebRTC is in customer service applications, it enables real-time communication between customers and support agents. This can be done through video chat, voice chat, or text chat and it enables customers to get help quickly and efficiently.
+
+In summary, WebRTC is widely used in video conferencing, live streaming, online gaming, and customer service applications to enable real-time communication capabilities.

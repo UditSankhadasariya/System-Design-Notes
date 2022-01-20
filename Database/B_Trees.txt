@@ -1,0 +1,31 @@
+==>DIsk is composed of blocks, and each each bloack has some size attached to it(Eg. 512 bytes).
+
+==> All R/W are always done in terms of blocks.
+
+==> each block will have offset using which we can acces the exact byte in that block.
+
+==> data cnanot be preocsesed dorectly on the disk it has to be broughjt ot the main menory proceesd and than written to the disk.
+
+==> serilaization of rows - so the way how rows are stored in disk is, we calcalutae how many bytes constiotute a row. and these wil be divided by block size to dertmine how many rowes woudl sit in each block.
+
+==> Any filter would bascially, do a full table scan, so all the blocks would be IO'd. So we can create a index on a column storing the column in sorted order and there correspondihg rowids, so this woiuld significantly recude the disk IO. bcz index R?W would be just 1/2 blocks and once we apply filter getting data would be another 2-4 blcoks of I/O.
+
+==> Multilevel indexing -> if the size of all the rows increse significatnly our index tables itslef wil be very large so to avoid extra computation, we can have index over over index. Again this would be at a block level indicating what values are presne in rach bloack of the index table.
+
+==> This is the idea used in B-Trees -> each value in node will point to a range of values in the next level.
+
+==> we cannot decide whther to add level or not manually, this needs to ber self balancing. B trees are self balcing  trees.
+
+==> M-way search trees each node can have m keys and that will have m+1 childs, and the criteria would be same as BST, everry node should satsfy the range condition.
+
+==> B-trees are M-way search but with guidelines and they are baalncing in nature.
+
+==> rules - we can only create a new node ones, half of the keys are filled in first. All leaf nodes must me at the smae level.
+    - creation procees is bottom up. we fill the value and if it excxeeds the dgeree, than we split that into multiple nodes and add a reference to it in the above lvelel(send one o fthe key to teh parent).
+
+==> onlu difference between btrees and b+trees is that in b+trees nodes in a page do not hold any daata/value/reference to pointer it only has references to children pages. 
+- this can lead to duplication of data, but this means with only references we can store alot of things in a single page with high branching factor.
+- second difference is since the leaf nodes are the only ones storing the actual value than can have pointers to each otgher, making range queries faster. and also they can be sequentially written on the disk.
+- another advantage of b+ would be since apart from leaf nodes all other nodes just have tarversal data, we can store those in-memory and leaf data can be stored on the disk.
+    
+

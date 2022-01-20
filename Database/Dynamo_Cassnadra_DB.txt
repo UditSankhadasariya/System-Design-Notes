@@ -1,0 +1,148 @@
+==> 3 main goals of a key-value DB  
+    - scalability
+    - eventual consistency
+    - Decentralization
+
+     
+
+====================================================================================================     
+Cassandra
+- No sql distibuted DB.
+- it consists of alot of nodes
+- each node with capacity aprox (2-4TB)
+- leaderless peer to peer system
+- use gossip protocol to communicate to each other (like rpelication etc.)
+- It used to handle petabytes of data.
+- high availability(bcs of distibuted nnature, replication, and leaderless arch)
+- writes are extremely fast(microsends). reads are also slower than writes(MilliSeconds).
+- It smoothly scales horicontally, have more data just increase the number of nodes.
+- The data is distributed in nodes in paritions and there distibutiuon happens just like sharding(consistent hashing)
+- we can set a replication factor to enusre no loss of data
+- ones a r/w write req comes to node it is called the cordinator node. the cordinator will communicate the detail to all other replication nodes(accordingly if it read or write.)
+- if a node is failed, the cordinaotr will store it in log, and ones node is up, it will pass the value to that node.
+- consistency level can be set. Eg. QUORUM(majority of them) which means if facotr is 3 it wil wait until the write is done on 2 nodes and then only send the resaponse to the user.
+- These nodes can also be in sepciofic geographical location reducing the latencies as much as poswisble. with all the default feature that cassandra has.
+
+Implementation
+- Key space is basically a container of tables.similar to DB concept that we have in SQL.
+- groups of related rows called parititons are stored together in same nodes.
+- each row contains a parition key.
+- CQL is sort os subset of sql, so it can be veru easy transition.
+- clustering columns can be useful to keep them in sorted order , to define uniquiness in the data. to avoid errors during race condition.
+
+
+Apache Cassandra is a highly scalable, distributed NoSQL database that is designed to handle large amounts of data across many commodity servers, while providing high availability and low latency.
+
+Some of the unique selling points (USPs) of Cassandra include:
+
+High scalability: Cassandra is designed to handle large amounts of data and high traffic, with the ability to scale horizontally by adding more machines to a cluster.
+
+High availability: Cassandra is designed to be highly available, with no single point of failure. It can automatically replicate data across multiple nodes in a cluster, and can continue to operate even if some nodes fail.
+
+High performance: Cassandra is designed to provide low latency and high throughput, making it well suited for high-performance applications such as real-time analytics and online gaming.
+
+Flexible data model: Cassandra has a flexible data model that allows for storing and querying different types of data, including structured, semi-structured, and unstructured data.
+
+Fault-tolerance: Cassandra is designed to be fault-tolerant, meaning it can handle and recover from failures without data loss.
+
+Support for multiple data centers: Cassandra can be used to store data across multiple data centers, providing the ability to store data closer to the users, reducing latency and improving performance.
+
+Support for tunable consistency: Cassandra provides tunable consistency, meaning you can choose the level of consistency that you need for your application.
+
+Overall, the USP of Cassandra is its ability to handle extremely large data sets with high availability, high performance, and scalability. It's a great choice for use cases such as real-time analytics, recommendation engines, and content management systems.
+
+Cassandra guarantees high performance when working with large amounts of data by using a combination of techniques:
+
+Data Partitioning: Cassandra uses a technique called partitioning to distribute data across multiple nodes in a cluster. Each piece of data is assigned a unique key, and the key is used to determine which node the data should be stored on. This allows Cassandra to distribute data evenly across the cluster and minimize the amount of data that needs to be moved when a node is added or removed.
+
+Data Replication: Cassandra automatically replicates data across multiple nodes in a cluster to ensure high availability and fault tolerance. This also helps to distribute the read load across multiple nodes, improving performance.
+
+Column Families: Cassandra organizes data into column families, which are similar to tables in a relational database. Each column family is made up of rows and columns, and each row can have multiple columns, which allows for flexible data modeling and efficient storage of large data sets.
+
+Low-level storage: Cassandra uses a low-level storage system, called a SSTable (Sorted Strings Table) for storing data on disk, which makes it very efficient for reading and writing large amounts of data.
+
+Compaction: Cassandra uses a technique called compaction to periodically merge and compact SSTables on disk, which helps to reduce the number of files needed to store data and improves read performance.
+
+Materialized views: Cassandra supports materialized views, which are pre-aggregated queries on top of the data, they allow users to quickly access the most common queries, reducing the load on the database.
+
+Query Optimization: Cassandra's query engine is designed to optimize queries and minimize the amount of data that needs to be read from disk. It also supports advanced query features such as filtering and aggregation, which can help to improve performance when working with large data sets.
+
+All these techniques help Cassandra to handle large amounts of data and provide high performance, even when dealing with petabytes of data.
+
+It's worth noting that it's always a trade-off between performance and consistency, as the size of the data grows, it's harder to keep the consistency and the performance high, so it's important to understand the requirements of your application and tune the database accordingly.
+
+Apache Cassandra and Amazon DynamoDB are both highly scalable, distributed NoSQL databases, but they have some important differences:
+
+Data model: Cassandra has a more flexible data model than DynamoDB. Cassandra supports a wide variety of data types, including structured, semi-structured, and unstructured data, and it allows for more complex data modeling, such as wide rows and secondary indexes. DynamoDB, on the other hand, is a key-value store that supports a simple data model, with a primary key and secondary indexes.
+
+Consistency: Cassandra provides tunable consistency, meaning you can choose the level of consistency that you need for your application. It supports both strong and eventual consistency options. DynamoDB, on the other hand, provides only eventual consistency, with the ability to adjust the consistency level for a single read or write operation.
+
+Deployment: Cassandra is an open-source database that can be deployed on-premises or in a cloud environment, and can be managed by the user. DynamoDB, on the other hand, is a proprietary service provided by Amazon Web Services, and it can only be used in the AWS cloud environment.
+
+Query Language: Cassandra supports the Cassandra Query Language (CQL) which is similar to SQL, and it's familiar to users with relational database experience. DynamoDB, on the other hand, uses a different query language called DynamoDB Query Language (DQL) that has a different syntax and structure.
+
+Performance: Both Cassandra and DynamoDB are designed to handle high loads and large amounts of data, but they have different performance characteristics. Cassandra is optimized for reads and writes, and it's suitable for use cases such as real-time analytics, recommendation systems, and content management systems. DynamoDB, on the other hand, is optimized for read and write heavy workloads, and it's suitable for use cases such as gaming, IoT, and ad tech.
+
+Overall, Cassandra and DynamoDB are both highly scalable, distributed NoSQL databases, but they have different design goals, data models, and performance characteristics. The choice of which one to use will depend on the specific requirements of your application and the use case you are trying to solve.
+
+
+
+Yes, Amazon DynamoDB is a key-value store. It is a NoSQL database that stores data as key-value pairs. In DynamoDB, data is stored in a large hash table and can be quickly retrieved using the key. The value can be any kind of data and can be updated, deleted, or retrieved in constant time, independent of the size of the data set.
+
+Each item in a DynamoDB table has a primary key, which is used to uniquely identify the item and a secondary index, which allows for querying the data based on non-primary key attributes. The primary key can be of two types: partition key and partition key and sort key (also known as composite key) which allows for more querying capabilities.
+
+DynamoDB is designed to provide high performance, scalability and low latency, it can handle millions of requests per second and can store petabytes of data. It's typically used in use cases such as gaming, IoT, ad tech, and other high-performance, high-throughput applications.
+
+==============================================================================================================================
+
+QUORUM
+
+A quorum refers to the number of nodes or members of a group that must be present and in agreement in order for a decision to be made or an action to be taken. In the context of distributed systems, a quorum is the minimum number of nodes that must be available and able to communicate with each other in order for the system to function properly.
+
+A quorum can be defined in different ways, depending on the specific system and the desired level of fault tolerance. For example, in a replicated system, a quorum might require a majority of nodes to be available and in agreement. In some systems, such as Paxos and Raft, a quorum is used to achieve consensus among the nodes in the system.
+
+In distributed systems, a quorum can be used in different ways, for example, in a distributed database, a quorum can be used to ensure that a write operation is committed only if a certain number of replicas have acknowledged the write. In a distributed file system, a quorum can be used to ensure that a file can be read or written only if a certain number of replicas are available.
+
+Quorum is an important concept in distributed systems as it ensures that the system can continue to function even if some nodes fail. It allows the system to make decisions and perform actions even when some nodes are unavailable, which helps to ensure high availability and fault tolerance.
+
+
+In Apache Cassandra, a quorum is used to ensure data consistency across a cluster. A quorum is the minimum number of replicas that must be in agreement before a write operation can be considered successful. When a write operation is performed, the data is written to multiple nodes in the cluster, and a quorum is used to ensure that a certain number of those nodes have acknowledged the write before the operation is considered complete.
+
+Cassandra uses the concept of a "write quorum" and a "read quorum" to ensure data consistency. The write quorum is the number of replicas that must acknowledge a write before it's considered successful, and the read quorum is the number of replicas that must be queried before returning a result.
+
+The write quorum and the read quorum are defined by the consistency level that's set for the operation, which can be specified at the session or query level. The consistency level can be set to one of the following values:
+
+ANY: the write or read operation is considered successful as long as one replica responds.
+ONE: the write or read operation is considered successful as long as one replica responds and acknowledges the write.
+TWO: the write or read operation is considered successful as long as two replicas respond and acknowledge the write.
+THREE: the write or read operation is considered successful as long as three replicas respond and acknowledge the write.
+QUORUM: the write or read operation is considered successful as long as a majority of the replicas respond and acknowledge the write.
+ALL: the write or read operation is considered successful as long as all the replicas respond and acknowledge the write.
+The quorum value can be adjusted to suit the specific requirements of the application. For example, if high availability is a priority, a lower quorum value can be used to allow operations to complete even if some nodes are unavailable. On the other hand, if data consistency is a priority, a higher quorum value can be used to ensure that a larger number of replicas must acknowledge a write before it's considered successful.
+
+It's worth noting that the quorum value affects the consistency and the performance of the system, and it's important to choose the right consistency level based on the requirements of the application.
+
+
+==============================================================================================================================
+
+==>In dynamo DB the primary key is compulsory, and it can be of 2 types:
+    - simple primary key (something like a UUID)
+    - composite key consiting of a parition key and a sort key.
+        - to update ,delete a record both keys will be required to uniquely identify a row.
+        - to read the rows parition key is compulsory (sort key is optional)
+
+==> Secondary Indexes - if we have an access pattern which is not satified by primary key than we can have secondary indezes.
+                - adding a secondary indexes
+
+==> in DynamoDB While designing your database, remember that there is no concept of joins, so normalization doesn't work here. In relational database, we are used to having one entity type for one table, but in dynamo scene joins are not allowed we can merge two or three logical binding entities into a single Table
+
+==============================================================================================================================
+In Amazon DynamoDB, secondary indexes can potentially slow down write operations because creating and maintaining the index requires additional processing power.
+
+When a new item is written to a DynamoDB table, the index also needs to be updated to reflect the new item. This means that the write operation will take longer and consume more write capacity as it needs to update the index in addition to the table.
+
+Additionally, if the table has multiple secondary indexes, each index will need to be updated during a write operation, which can further slow down the write performance.
+
+It's worth noting that the impact of secondary indexes on write performance can vary depending on the size and structure of the table and the rate at which items are written. In general, the more secondary indexes you have, the greater the impact on write performance.
+
+You can mitigate this impact by limiting the number of secondary indexes on a table or by denormalizing the data and storing it in the same table, thus reducing the need for secondary indexes

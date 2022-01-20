@@ -1,0 +1,20 @@
+==> Cassandra gives you an tunable consistency at a query level as well.
+
+==> mermer3 and md5 are used as hashing algos used in Cassandra
+
+==> node - where you store the actual data
+    cluster - collection of nodes(can be only one node as well), these can span across multiple datacenters.
+
+==> you can set replication strategy at minute level. 
+    - simplestrattegy with factor 3 => copy data to three other nodes
+    - networkToplogy mode -> you can mention factor for each individual datacenters(eg dc1:1 and dc2:2) total replication would become 3
+
+==> hinted hadnoff, in case of failures the coordinator node will keep the hints/failures info and will contact the node once it is recovered    
+
+
+
+==> keyspace outer most container that contains the data(similar to Database in mysql)
+    - COLUMN FAMILIES - similar to tables in a Database
+
+==> all the incoming data is first written to a commit log before it is written to a memtable.
+    

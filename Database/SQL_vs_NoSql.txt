@@ -1,0 +1,30 @@
+
+The number of queries per second an RDBMS can handle and the amount of data it can store at maximum will vary depending on the specific RDBMS, the hardware it's running on, and the complexity of the queries.
+
+A high-end RDBMS like Oracle or SQL Server can handle tens of thousands of queries per second and store several terabytes or even petabytes of data. However, a more modest RDBMS like MySQL or PostgreSQL may handle only a few thousand queries per second and store several gigabytes to several terabytes of data.
+
+When it comes to deciding when to move from an RDBMS to a NoSQL database, there are a few key factors to consider. One is the scalability of the RDBMS, as NoSQL databases are often better suited for handling very large amounts of data or very high traffic. Another is the type of data being stored and the queries that need to be performed on it. NoSQL databases are particularly well-suited for storing unstructured data and for handling complex, non-relational data.
+
+Additionally, if you need to handle a large number of writes or updates to your data, a NoSQL database may be a better choice than an RDBMS, as NoSQL databases are designed to handle high write loads and support horizontal scalability.
+
+It's important to note that RDBMS and NoSQL databases have different characteristics, strengths and weaknesses, and are used for different use cases. It's not a question of one being better than the other, but rather understanding the requirements of your application, and choosing the database that best fits those needs.
+
+==============================================================================================================================
+KV (Key-Value) data store, also known as a key-value store, is a type of NoSQL database that stores data as key-value pairs. In a KV store, data is stored in a large hash table and can be quickly retrieved using the key. The value can be any kind of data and can be updated, deleted, or retrieved in constant time, independent of the size of the data set.
+
+A KV store is a simple and efficient data storage solution that is well suited for storing large amounts of data, handling high read and write loads, and scaling horizontally. It's typically used in use cases such as caching, session management, and configuration management.
+
+KKV is a Key-Key-Value data store, which is a variation of the KV data store, it stores data as key-key-value triples, where the key-key is used as the primary index and the key-value as secondary. This allows for more flexibility in terms of data access and organization. It's typically used in use cases such as Time Series data, hierarchical data, and metadata management.
+
+Examples of KV data store are Redis, Memcached, Riak, and LevelDB.
+
+==============================================================================================================================
+Mysql points
+- widely used
+- mature technology
+- clear sclaing paradigms(indexing,sharding, replication etc.)
+- index lookups are very fast
+
+
+
+

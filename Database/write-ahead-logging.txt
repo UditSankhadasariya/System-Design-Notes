@@ -1,0 +1,22 @@
+==> write ahead, logging is generally used to increase the reliability of a persistent database
+
+==> A committed transaction should be stored, anyhow, in case of any failures power, network etc.
+
+==> Data updates must be stored to any nonvolatile storage. It can be anything(disk etc), which is immune to power loss, os failures, hardware failures.
+
+==> So generally when a crud operation is performed the actual table files, and all the indexes are updated so the core idea behind right ahead logging is before updating the actual table files and indexes. Write it into a log file first indicating all the changes that are going to happen.
+
+==> And logging the actual log file is in the sync mode, which means it would ignore all the caches in the middle and directly stored in the persistent storage or the disk.(a traditional flow is data goes through Ram -> OS cache -> disk cache -> disk)..sync mode directly writes to disk.
+
+==> This won't have complete details of what the data is been changed. For example, it can just have a simple SQL query, and since it is open in sync mode, and it is appnd only,  it is lightning click, and it won't add up to the latency.
+
+==> advantages of WAL
+    - We don't need to flush all the changes from the main memory to the nonvolatile storage on each and every commit we can do it in certain intervals(asynchronously), and if there is a failure, we can just simply replay the log that we just created.
+    - It reduces the number of disc rights that happen.
+    - Point in time snapshot is possible using a WAL we can just replay the logs until a particular snapshot.
+
+
+=> althoug this sounds very simple. There can be a failure when the right ahead log is being created or while writing to the disc there can be a failure in the middle.
+    - every individual in WAL is CRC-32 protected
+    - every data should go thorugh a cyclic redundancy check.(as simple as check sum)
+    - so while logging the first thing that gets logged is this CRC/ checksum and then the actual log is written.

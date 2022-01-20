@@ -1,0 +1,14 @@
+==> when we want to check whether something is present or not obviously a scan is a good way, but to identify whether it is present or not in a very quick and efficient Way, bloom filters are used
+
+==> it is a probabilistic data structure. a query returns either "possibly in set" or "definitely not in set"
+==> A typical approach can be pass through a hash function ,mark those bit. but this can lead to a lot of collissions
+
+==> So the expensive inquiry to the database can be avoided by having a bit array, passing the input through four or five hash functions and checking those bits so if those bits are set, then the result may be present, but if any of that is for sure there is no need to query db.
+-> this is implemented in cassandra, with its concept of sstables.
+
+==> The smaller the number of bits in the filter leeser would be the number of collisions or the saturation point coould reach even with decent amount of data and you would get a lot of false positives.
+
+==> there is a possibility that after some point of time everything would be set to 1. 
+
+
+==> implementation - it will be an array of bits.

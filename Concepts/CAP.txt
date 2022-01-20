@@ -1,0 +1,26 @@
+==> desirable property of a distributed system with replicated data.
+
+==> We cannot achieve all three together
+
+The CAP theorem is a concept in distributed systems that states that it is impossible for a distributed system to simultaneously provide all three of the following guarantees:
+
+Consistency: all nodes in the system see the same data at the same time
+Availability: every request receives a response, without guarantee that it contains the most recent version of the information
+Partition tolerance: the system continues to function despite arbitrary partitioning due to network failures
+The CAP theorem states that a distributed system can satisfy at most two of these guarantees at the same time. For example, a system that prioritizes consistency and availability may not be able to tolerate network partitions, while a system that prioritizes availability and partition tolerance may sacrifice consistency in the case of network failures.
+
+It's important to note that the CAP theorem is a theoretical concept and it's not always applicable in every distributed system, it's often used as a reference point to help guide design decisions when building distributed systems.
+
+In summary, CAP theorem is a concept in distributed systems which states that it is impossible for a distributed system to simultaneously provide all three guarantees: Consistency, Availability and Partition tolerance, a distributed system can satisfy at most two of these guarantees at the same time.
+
+Consistency and Partition tolerance (CP): A distributed database, such as Google Spanner, prioritizes consistency, meaning that all nodes in the system see the same data at the same time. It also prioritizes partition tolerance, meaning that the system can continue to function despite network failures. In this case, the system may sacrifice availability by temporarily denying write requests during network partitions to maintain consistency.
+
+Availability and Partition tolerance (AP): A NoSQL database, such as Cassandra, prioritizes availability, meaning that every request receives a response. It also prioritizes partition tolerance, meaning that the system can continue to function despite network failures. In this case, the system may sacrifice consistency by allowing different nodes to have slightly different versions of the data during network partitions.
+
+Consistency and Availability (CA): A traditional relational database management system, such as MySQL, prioritizes consistency, meaning that all nodes in the system see the same data at the same time. It also prioritizes availability, meaning that every request receives a response. In this case, the system may sacrifice partition tolerance by not being able to function during network partitions.
+
+It's worth noting that, in practice, most systems do not strictly adhere to one of these pairs, but rather aim to balance the trade-offs between the guarantees based on the specific requirements and constraints of the application.
+
+
+Throughput: The number of requests a system can handle per unit of time. Throughput is closely related to scalability and is often used as a measure of a system’s performance.
+Partition Tolerance: The ability of a system to continue functioning when network partitions occur. In distributed systems, it’s impossible to have both consistency and partition tolerance at the same time, so a designer must decide which one is more important for the use case.

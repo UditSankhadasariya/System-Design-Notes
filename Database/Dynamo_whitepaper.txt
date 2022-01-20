@@ -1,0 +1,82 @@
+- the main objecttive was to provide an always-on experience.(very very high availability)
+
+- A lot of services in Amazon only had a primary key access pattern and relational database would lead to in efficiencies and limit the scale in the availability.
+
+- To achieve scalability and availability a lot of techniques are used. Data is partitioned and replicated using consistent hashing .consistency is facilitated by object versioning,  consistency among the replicas during update operation is maintained by a quorum like technique and decentralized replica synchronization protocol(gossip protocol).
+
+- The access pattern was such that most of the services only store and retrieve data by the primary key, and do not require. The complex querying and management functionality offered by relational database.
+Another assumption in the access pattern is no operation span multiple data items or rows, and there is no need for relational schema.
+
+- Matrix with average median and mode are not a good indicator Amazon focuses a lot on the 99.9th percentile.
+
+- ONE OF THE PROBLEM IS DATA CONSISTENCY, AND THERE ARE TWO CHOICES TO SOLVE THE CONFLICTS WHILE READING, OR WHILE WRITING TRADITIONAL APPROACH WOULD BE WHILE WRITING ITSELF SOLVE ALL THE CONFLICTS AND WRITE ALL THE REPLICAS, BUT in such SYSTEMS RIGHTS MAY BE REJECTED IF THE DATA STORE CANNOT REACH ALL OF THE REPLICAS AT THE GIVEN MOMEN AND DYNAMO TARGETS THE DESIGN SPACE OF AN "ALWAYS WRITABLE DATA STORE"
+Hence the complexity of conflict resolution needs to be pushed to the reeds, as well as right to make sure the rights are never rejected
+
+- Another design choice is who performs the process of conflict resolution it can be done by the data store or the application, or it can be done by the client himself
+If we choose DataStor to do conflict resolution, we are bounded by using simple policies like last right wins to resolve conflicting updates
+But it would be better if the application or the client itself handles the conflict so, for example, if there are conflicts for the cart of a user, then the database would basically return two versions of the cart, and the application server can merge those two values
+
+- The conflict resolution mechanism is not handled by the client, then delete a store with simply choose last right wins policy.
+
+- It is a completely decentralized system that is each, and every node should have the same set of responsibilities as its peers. There should not be any distinguished note or masters slave kind of architecture that take special rules or extra set of responsibilities. symmetry, simplifies the process of provisioning and maintenanc
+
+- Decrease the number of hops required per request each node, maintains enough routing information locally to route a request to the appropriate note directly
+
+- So each and every request object has a context with it which is used internally by data store to resolve conflicts and stuff, and to access the data. It applies in MD5 hash on the key to generate a 128 bit identifier, which is the used to determine the storage nodes that are responsible for serving the key.
+
+- When the right request comes, the coordinator note will replicate its data to the next successors in the ring, which will be stored in preference list. how many notes to replicate depends on the configurable parameter, which is passed by the user but to account for node failures the preference list contains more than the N count, which is given by the user.
+
+The preference list won't be having strictly the next nerds in the ring but it will have the , unique notes in the ring along with its availability zone criterias.
+
+- Dynamo trade the result of each modification as a new and immutable version of the data so it allows for multiple versions of an object to be present in the system at the same time.
+
+- to handle conflicts vector clocks are used, wearing a vector clock is basically a list of (node, counter), oairs, and each Victor clock is associated with every version of every object.
+So whenever a client wishes to update an object, it must specify which version it is updating. This can be done by passing the context it obtained from the earlier read operation which contains the vector clock information.
+
+- We will have a preference list whrein we will know that what key range should be entertained by what number of notes and first notice generally chosen as the coordinator.
+
+- A quorum protocol is used wearing we have to configurable values R and W, which are the minimum number of nodes that must participate in a successful read or write operation.
+
+- Traditional quorum is not used in order to have durability. Instead, it uses sloppy Coram, where, in all the read and write operations are performed on the first N healthy notes from the preference list, and they may not always be the first N notes that we encounter while walking the consistent hashing ring.
+
+- hinted handoff - If some nerd is temporary  down or unreachable during right operation, then a replica that would have normally lived on that note will be sent to the next note in the preference list, and that note will have an hint in its meta-data(context) that suggest that the previous node is failed and the intended recipient is someone else in this case the failed note. the current node will keep the data in a separate local database which is scan periodically. Once the node  recovered this complete data is transferred to that particular node, and the data is deleted from the local store of the current node.
+
+- A node outage is very common, and in general, it is very transient in nature, but it may last, for an extended interval, apart from the sedition and removal of a new note from the dynamo ring mechanism is required, which is as following
+
+Whenever the membership is changed, the note that is serving the request right the membership change, and the time of the issue in its persistent store so this way the membership changes are tracked along with its corresponding timestamp, and this becomes eventually consistent across the complete database because of the gossip base protoc which is basically each note contacts another node chosen at random every second and the two notes efficiently reconcile their persisted membership changes
+Each store is now aware of the token range is handled by peers because of this gossip protocol so this allows each note to forward keys read right operation to the right side of nodes directly
+
+- When a new note is added, it is assigned a number of tokens that are randomly scattered on the ring so for every key range that is a assignedsign to the new node there may be number of notes which are already handling those keys so those need to be transferred to this particular node and similarly if an order is removed, the relocation of keys needs to be happened 
+
+- The way it is implemented internally is it has a state machine inside each client request result in the creation of a state machine on the node that received the client request. The state machine contains all the logic for identifying the notes responsible for a key sending the request, waiting for responses, potentially doing retries, processing the replies and packaging the response to the client. Each state machine instance, handles exactly one client requests.
+
+- though the reads and rights are fast these amount of IO operations typically slow down the entire request so one of the optimization is each storage node maintains an object buffer in its main memory, and each right operation is stored in the buffer and gates periodically written to the storage or flush to the storage by writer thread.
+In the scheme read operations first, check, if the requested key is present in the buffer. If so, the object is red from the buffer instead of the storage engine. The idea is similar to go right ahead log
+
+- This optimization resulted in lowering the P 99 latency by a factor of five during peak traffic, even for a very small buffer of 1000 objects.
+
+- This scheme trades durability for performance. A server crash can result in missing rights that were queued in the buffer so to reduce this durability risk. The right operation is refined in such a way that coordinator chooses one out of the N replicas to perform a "durable write".
+ Since the coordinator waits only for W responses, the performance of the right operation is not affected by the performance of the "durable write" operation performed just by a single replica.
+
+
+- to route a particular request, there are two approaches you can use a load balancer and randomly send a request to any of the note and since all the notes have their preference list in it can be pointed out to the particular node, but this has two major disadvantages number one is the load balancer second is the extra network hop, which is requiredTo find the right node. this is called server side handling
+-another technique is client driven where in client can get the membership information from any of the node in every 10 second interval, and it can compute which Nord should be chosen to entertain this particular request
+The results were that the client driven approach reduces the latency at the P99 by at least 30 ms and decreases the average by 3 to 4 ms
+
+
+- For the uniform, load distribution following tactics where used so first of all each, and every server will have some virtual tokens to ensure even lower distribution, and all the tokens of all the notes are randomly distributed on the hashing, and whenever a new note is added, or removed rebalancing needs to be done so basically, if a new note is added, it has to steal all keys from the neighboring north. 
+And this shifting of data required, the complete table scan, which is very very costly operation in a production system, and if we prioritize the customer facing actions more over this bootstrapping process, then the bootstraping process of the new node can take a lot of time, and it was seen that it almost took a day for some of the new notes to come up And copy the Data.(during peak traffic.)
+
+- It is desirable to use independent schemes for partitioning and placement so another technique that was used is the hashing ring was divided into Q equally sized  segments, where,Q is very very very greater than the number of notes and tokens that we have. now the membership information would be simply how many number of petitions will this particular nerd entertain.
+
+The advantage here is since the partition ranges are fixed, they can be stored in separate files meaning a partition can be relocated as a unit, by simply transferring the file this simplifies the process of bootstrapping and recovery of a particular node in previous approach, since it was completely random, it needed a complete scan to move the data from one node to another
+
+
+- new paper major takeaways - https://www.alexdebrie.com/posts/dynamodb-paper/
+how does it handle hopt keys
+how it handles strong consistency for primary key reads.
+
+
+- There are multiple components to dynamo, req router which routes the req to the approriate node, metadata service which stores all the data like the table, indexes, parititons etc.
+
+- a parititon key is compulsory to access anything in the DB.

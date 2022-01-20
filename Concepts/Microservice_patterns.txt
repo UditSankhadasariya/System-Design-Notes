@@ -1,0 +1,93 @@
+Monolithic architecture and microservice architecture are two different approaches to building software systems. Each has its own set of pros and cons.
+
+Monolithic architecture:
+Pros:
+
+Simple to develop and deploy: Because all components of the system are tightly integrated, it's relatively easy to develop and deploy a monolithic application.
+Easy to test: Because all components of the system are in the same codebase, it's relatively easy to test the entire system end-to-end.
+Easy to understand: Because all components of the system are in the same codebase, it's relatively easy for developers to understand how the entire system works.
+Cons:
+
+Difficult to scale: Because all components of the system are tightly integrated, it's difficult to scale different parts of the system independently.
+Difficult to maintain: Because all components of the system are tightly integrated, it's difficult to make changes to one part of the system without affecting the whole system.
+Difficult to deploy updates: Because all components of the system are tightly integrated, it's difficult to deploy updates to one part of the system without affecting the whole system.
+Microservice architecture:
+Pros:
+
+Easy to scale: Because each microservice is a self-contained unit of functionality, it's relatively easy to scale different parts of the system independently.
+Easy to maintain: Because each microservice is a self-contained unit of functionality, it's relatively easy to make changes to one microservice without affecting the whole system.
+Easy to deploy updates: Because each microservice is a self-contained unit of functionality, it's relatively easy to deploy updates to one microservice without affecting the whole system.
+Cons:
+
+Complex to develop and deploy: Because each microservice is a self-contained unit of functionality, it's relatively complex to develop and deploy a microservice-based application.
+Complex to test: Because each microservice is a self-contained unit of functionality, it's relatively complex to test the entire system end-to-end.
+Complex to understand: Because each microservice is a self-contained unit of functionality, it can be relatively complex for developers to understand how the entire system works.
+It's worth noting that in practice, most systems are a mix of both Monolithic and Microservice architecture, depending on the specific requirements and constraints of the application. For example, a system may have a monolithic front-end and a microservice back-end, or vice versa.
+
+In general, a monolithic architecture is better suited for small to medium-sized systems with a simple and well-defined set of functionalities, while a microservice architecture is better suited for large and complex systems with a diverse set of functionalities that need to be independently scalable and maintainable.
+
+It's also worth noting that a microservice architecture comes with its own set of challenges such as data consistency, service discovery, service registration and monitoring, service deployment and versioning, and service orchestration, which need to be properly addressed during the design and development of a microservice-based system.
+
+==============================================================================================================================
+
+The strangler pattern is a technique for migrating a monolithic application to a microservice architecture. The idea behind the strangler pattern is to gradually "strangle" the monolithic application by incrementally replacing its functionalities with microservices.
+
+The process typically starts by identifying a small, well-defined set of functionalities within the monolithic application that can be implemented as a separate microservice. The new microservice is then developed and deployed alongside the monolithic application. Once the new microservice is fully functional, it is integrated with the monolithic application so that it handles the corresponding functionality. The old, monolithic code that handles the same functionality is then "strangled" by gradually removing it from the codebase.
+
+The process is repeated for other functionalities within the monolithic application until all of the monolithic application's functionalities have been replaced by microservices.
+
+The strangler pattern has several benefits:
+
+It allows for a gradual transition from a monolithic to a microservice architecture, which reduces the risk of introducing bugs and downtime.
+It allows for incremental testing and deployment of the new microservices, which reduces the risk of introducing bugs and downtime.
+It allows for a phased approach to refactoring the monolithic application, which can be more manageable than trying to refactor the entire application at once.
+It allows to keep the existing functionality working while replacing it with new microservices.
+It's worth noting that the strangler pattern is not a one-size-fits-all solution, it's important to evaluate the specific requirements and constraints of the application before deciding to adopt this pattern. It's also important to have a clear plan and strategy for the migration process, as well as a good understanding of the microservices architecture and its associated challenges.
+
+==============================================================================================================================
+Data management in microservices
+- There are generally two approaches, each database for each micro service, and another one is shared database for some of the services.
+
+- problems with shared...we cannot scale individual parts, and to do something with DB we need check that will it impact other DB's or not.
+- advantage - Joining is very easy, Transcational properties can be easily maintained.
+
+-same become opposite for the non-shared case.
+
+Generally, a database for each individual service is preferred. And to overcome, above problems we have to two pattens, saga and CQRS.
+==============================================================================================================================
+SAGA
+    - An example of a transactional collision. Let's say we have three services order, inventory and payment and to process an order. We need to change all the three databases so it's important to maintain ACID properties for this particular order.
+==> The saga pattern is a technique for managing data consistency in a distributed system. It is used to ensure that a series of transactions, which may involve multiple microservices, are executed in a consistent and reliable manner.
+
+The basic idea behind the saga pattern is to break down a larger, complex transaction into a series of smaller, independent transactions. Each of these smaller transactions is executed by a separate microservice and is responsible for updating a specific piece of data. The key to making the saga pattern work is to ensure that each microservice updates its data in a way that preserves the consistency of the entire system.
+
+The saga pattern is often used in cases where a transaction may involve multiple microservices, each with its own data store, and it's not feasible or desirable to use a traditional two-phase commit protocol to coordinate the transaction.
+
+The Saga pattern has several benefits:
+
+It allows for a more flexible and scalable approach to data consistency in a distributed system.
+It allows for a more fault-tolerant approach to data consistency, as the smaller transactions can be compensated if one of them fails.
+It allows for better performance and scalability, as the smaller transactions can be executed in parallel.
+It allows for a more fine-grained approach to handling failures and compensating for them.
+It's worth noting that the saga pattern can be somewhat more complex to implement than other patterns and it requires a good understanding of distributed systems, data consistency, and fault tolerance. Also, it can add some latency to the system if not implemented properly.
+
+There are several approaches to implement the saga pattern, some of which include:
+
+Choreography-based sagas: This approach involves each microservice publishing events when it updates its data. Other microservices that are interested in the event can subscribe to it and take appropriate action. This approach is simple to implement and allows for a high degree of autonomy among the microservices. However, it can be more difficult to manage and monitor the flow of events and it can be harder to ensure that the events are delivered reliably.
+
+Command-based sagas: This approach involves each microservice sending commands to other microservices to update their data. Each command is accompanied by a compensation action that can be taken if the command fails. This approach is more centralized than choreography-based sagas and allows for better control over the flow of commands. However, it can be more complex to implement and requires more coordination between the microservices.
+
+Saga Manager: This approach involves using a dedicated microservice, known as the saga manager, to coordinate the execution of the transactions. The saga manager receives requests to execute transactions and sends commands to the appropriate microservices to update their data. The saga manager is responsible for ensuring that the transactions are executed in a consistent and reliable manner. This approach allows for better control over the flow of transactions, but it can be more complex to implement and requires more coordination between the microservices.
+
+Time-based sagas: This approach uses a time-based mechanism to determine if a transaction has failed and needs to be compensated. Each step of a transaction has a timeout value, if the next step of the transaction is not completed within that timeout, the system assumes that the step failed, and it will execute the corresponding compensation action.
+
+It's worth noting that there is no one-size-fits-all approach to implement the saga pattern and the choice of approach will depend on the specific requirements and constraints of the system. Also, it's important to evaluate the trade-offs between the different approaches and to have a clear plan and strategy for implementing the saga pattern.
+    
+==============================================================================================================================
+An approach to solve the problem of difficult joins (for each DB each micro service architecture). CQRS can be used.
+-  CQRS stands for Command Query Responsibility Segregation. It is an architectural pattern that separates the responsibilities of writing data (commands) and reading data (queries) into different components or systems.
+
+In a typical application, the same system or component is responsible for both writing and reading data. With CQRS, the system is split into two separate components: the Command Side and the Query Side. The Command Side is responsible for handling commands, which are used to write data to the system, while the Query Side is responsible for handling queries, which are used to read data from the system.
+
+for eg we can simply intoduce a view having the joined data and we can read from this view. and we can write a trigger which will update this view if there is any create,update,delete done on the main table.
+

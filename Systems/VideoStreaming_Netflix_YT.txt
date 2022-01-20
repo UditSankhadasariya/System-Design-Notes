@@ -1,0 +1,35 @@
+func requriements 
+- uplaod videos
+- user's homepage and search func
+- play videos
+- supporr all devices
+
+nfr
+- no buffering (low latency and always available) 
+
+The clients can be laptops, phones, tablets etc.
+==> The type of device and the formatts that can be supported are handled at the client side itself.
+
+==> if client realises that further chunks are no coming well in time, it well request for low quality video chinks from the server
+    this complete logic sits on the client side.It can also decide the chunk request based on the bandwidth of the user.
+
+==>This is called adaptive bitrate strewaming, there are libraries to build these funciionalisits.
+
+==> Uploader :- Ui will intract with the gateway, the gateway can be used to handle authenticaitn as well as load balancing.
+        - for productin house which will have movies maybe in TB's just upload button type funcitnality wont work, they can have a SFTP server were they will park there file and give url, username and password to the platform were they want to uploaed.
+
+        - The video file will bestored in S3.
+        - video metadata about the video wuld be stored in DB something like cassandra
+        - upload service once uploads the file to S3, will fire and event to kafka saying file is uploaded.
+        - There can be alot of consumers to his kafka topic, like :- 
+        - Processing of the vide(Content processor) will have the fololowgin steps - file chunking, content filter(piracy,nudity,legal etc), conten tagger(classifier,thumbnails etc.), transcoder(to convert to diff formate), quality converter,uploading to CDN.
+        - All above steps after chunking can be done parallely on the chunks concurrently.
+        - all the informatino above can be pushed to kafka topic, and we can have a spark streming process which reads these topic and
+            gets all info from all the chunks and aggregates data for a particular movie Id(eg aggregating all the tags of all the chunks and grouping for a movie id).
+        - we can have another monitoring serbvice checking all teh kafka logs and stopring it in some DB. once all the chunks are completed it can send out an event to the notification service(notificaiton to the Uploader). the reqson for this monitoring service is to chek each and every small progress done while processgin the video.    
+        
+
+
+==> end users :- 
+    -         
+

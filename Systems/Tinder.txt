@@ -1,0 +1,37 @@
+Features
+- storing profiles(along with images)
+- showing macths
+- direct msging
+- note the matches
+
+
+
+==> images storage is a good discussion point, do we want to store it as a blob or a file.
+    BLOB - binary large object
+
+    - decision points -> there are 4 main points that a DBMS gives us mutability, index, and acid garauntee, access control
+    for an image data we dont require any of them so converting into blob and storing in DB doesnt make alot of sense
+
+    advantanges of file storage - its cheaper
+        -  since the files are static we can be build a cdn on these static files.
+
+
+==> authentication instead of having auth logic every where in your differetn services(profile service, match service etc.),
+    having a gateway is a good idea to authenticate the user.
+
+    so gateway would connect with auth service to validate and if valid than redirect to appropiate service else fail the request.
+
+==> direct messaging - chat cannot be implemeted using client server so http cannot be used.(bcs this would require constant polling 
+    and that would be extremely inefficnet)
+    - we can use a peer to peer protocol like xmpp, so clients would have web socket connection with the server.
+    - server will have the map of userids and and there corresponding connectionIds, and we can build another seesion servcice 
+        which will hvae this info of the user and its corresponding socketid which can be used lateer to push the messages.
+
+==> to store the matches we can have anoher matcher servce which will have its own db noting all the macthes, and to send msg we will lookk at sessions service as well as matcher service to see if they match tan allow a  msg,  to the particular socket.
+
+==> for recommendation lets say we recmmend based n age,gender and location. querying on all 3 parameters in sql would be inefficeint.
+    even if we build indexes we cannot build index on all 3 columns, even if we build indexes query optimiser will only use either 1 of the index to optimse the search. nosql DB something like cassandra can be used for this kind of use case.we can replicate the data based in these fields and depending on query we can build the table
+    - or dynamo DB
+    - if no sql is rejected by intervbiew then we can propose rdms with sharding or horizontal partitioning.
+BLOG link - https://get.interviewready.io/blog/tinder-system-design?hs_bot1=true
+ 

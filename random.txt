@@ -1,0 +1,111 @@
+==> Always clarify the requirements first(functinasl ans nfr )
+==> Do the capcity estimation number of active users(and reads vs writes).
+==> start with endpoints and what paramaters that might require
+==> than think of DBMS(sql vs no sql classic pros and cons)
+==> if RDMS just discuss a little bit about the schema
+==> and discuss whether it is read heavy/ write heavy based on that decide on the replication policy.
+==> From time to time ask the interviewer whether does the design look right, or anything he wants to add.
+==> Think of preloading data as well (eg for tiktok, preload some videos to have a better UX.) 
+==> reseerahc on CDN's few examples and how can they be useful(achamy). Also cdn also should  be cached
+==> researhc on sharding and how you can apply (try to think mostly wrt to regional sharding bcz that is most effective).
+==> explore how video processing systems work. partial acknowldge ment (202 code) are useful here. instead of reate limiting the users.think of how we can use some kind of queuing system while processgin the videos.
+
+==>advantanges of S3 - would be using aws managed service so it is reliable. Not to worry about sla's. we would save the time that might be required to develop this independently with all the SLA's and reliability concerns.
+- if company has inhouse service like s3 than that can be used. another advantaghe of s3 is we can eassily tie it with a external cdn. we can have different s3 in diferent regions so that latency can be minimized.
+- advantage of multiple regions can be avoid single point of failure, and one regino failure wont impact the other.
+- s3 maqkes since bcz files are static and that wont require muttaibility.
+
+=> tiktok example - why k,v store for video meta data - metadata would be highly dynamic and can change over time. it is not organised so no sql makes sense.
+==> researhc on DB technologies what are k.v based databases(these are useful when we have  alot of reads and very less joins(unstructured)).
+
+==> if we have large video file or even text files and we want multiple formats of that then dividing into chunks and having multpi[le workers to convert those into file formats and reso;lutions can be a good technique. then we can merge them and upload it to s3.
+
+==> whenevr you need to do heavy processing and can afford some latency, we can have queu and parallel processing for optimal processing. it would be eventual consistency.
+
+==> the s3 files can also be replicated to have fault tolerance
+
+==> research on how files can uploaded to server what protocol to use http/ftp etc. also basic knowldge on tcp and udp protocols
+
+==> learn user authentication how you can design a system for that
+
+==> have a glance on how recommendation algorithm works.
+
+==>learn something on postgres its pros and cons
+
+==>when we have user ids in focus we can shard based on user id ranges. eg system like netflix will have millions of users so sharding based on userids is a good idea.
+
+==> shrading esay in sql tha no sql, research why??
+
+==> learn network protocols grpc, http, ftp etc..
+
+==> what is dynamo DB
+
+==> Candidates either:
+
+Approach questions in a chaotic way and get ratholed, or
+Lack solid understanding of how to properly design architectures that scale.
+
+==> research on what is map reduce design pattern
+
+==> what is http dash to handle adaptive bit rate
+
+==> reserahch on what is a blob
+
+==> lookup how authentication works using bearer token
+
+
+==> research on uuids or how are id's handled in db's
+
+==> research on http protocols 1.1/2/3 and others.
+
+==> research on elastic search
+
+==>load balanser sharding and weighted routing
+    what si rds aws
+
+
+==> what do you mena by prewarming the servers
+
+==> what are compound indexes?
+
+==> research on diff between partitioning and sharding
+
+==> research on md5
+
+==> base 62 encoding
+
+==> RPC
+
+==> Cricbuzz architecture
+==> reserach on what to use in no sql world, mongo vs cassandra
+
+==> IRCTC
+
+==> whta happens when you hit a url
+
+==> hadoop and hbase
+
+==> what is grpc
+
+==> RPC
+
+==> what is datawarehouse and data lakes
+
+==>learn what is Oauth 2.0
+
+==> diff betwenn node and parition in no sql(graph) DB's
+
+==> md5 checksum, base 62
+
+=> mongo db documnet store research
+
+==> what is red black tree in terms of leaer board maintainance.
+
+==> how many qps can redis sorted set handle for leaderboard maintainance
+
+==> real projects to build
+    - kafka (try redis sorted set or leaderboard)
+    - rabbit MQ
+    - grpc
+    - som eproject with race conditions and locking
+

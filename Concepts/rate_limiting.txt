@@ -1,0 +1,11 @@
+==> throttling or rate limitng is done to generally to ensure the rate of data flow is acceptable to the target system.
+
+==> resons for throttling
+    - avoid system abuse
+    - to only traffic that can be handled by the user.(eg our cnc to scraper)
+    - to avoid casacding failures(f current system goes done bcz of tsunami of request it would lead to cascading effects)
+
+
+Example use cases :- 
+- DDos attack
+-     

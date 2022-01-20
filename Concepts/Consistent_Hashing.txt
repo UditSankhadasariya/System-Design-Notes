@@ -1,0 +1,34 @@
+==> Hashing is basically you pass incoming value from a hash funtion which will have an output range which will map  to the servers accordingly.
+
+==> problem occurs when we have to add or remove servers, we have to remap the existing keys. consistent hasing solves htis problem
+
+==> Consider a hypothetical circular ring, and our hash function values will pe mapped to this circle.
+
+==> a circle has 360 different angles. the hash output values are mapped/distributed across the circle.
+
+==> we will pass the servers as well thoruhgh the hash function and map them to the circle. so we have the incoming value as well as 
+the server passed therugh hash and mapped to teh circle.
+
+==> both of them share the same output range. now how to decide which server does the value go no so it can go clock wise or anti 
+clockwise until it finds a server.
+
+==> this is how consistent hashinbg works, now how does it solve the given above problem, if we dont use consistent hasing we had to rempa 100% of the keys but in case of consistent hasing we only have to rempa around 50% of the keys.
+
+==> but when a server is remove it can lead to uneven load distribution on one particular server after remappping.
+
+==> we can replicate the servers and hash them and evenly distribute them on circles. so if anyone server dies the load of that server would still be evenly distributed amongst other servers. Also we will have te remap very few keys (around 25%) because of the replicaiton and effective distibution of the serves acroso the circle.
+
+==> it is not necessary to have an exact replica there but just virtual server denoting the main server, just to venely distribute the load in the circle.
+
+==> and this multiplication facotr could depend on each individual servser capcaity.
+
+
+==> Applications - Distributed Caches(eg redis and memcache): In computing, a distributed cache is an extension of the traditional concept of cache used in a single locale. A distributed cache may span multiple servers so that it can grow in size and in transactional capacity. It is mainly used to store application data residing in database and web session data.
+There are clients for several systems, such as Memcached and Redis, that include support for consistent hashing out of the box.
+
+Alternatively, you can implement the algorithm yourself, in your language of choice, and that should be relatively easy once the concept is understood.
+
+
+==> A very good explanation -> https://www.toptal.com/big-data/consistent-hashing
+
+==> simple implementation - https://github.com/coding-parrot/Low-Level-Design/blob/master/service-orchestrator/src/main/java/algorithms/ConsistentHashing.java

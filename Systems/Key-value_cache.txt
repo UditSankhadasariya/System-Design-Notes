@@ -1,0 +1,17 @@
+==> things to consider would be we would have very high number of qps, all of them can be unique
+    so a good eviction policy along with horizontal scaling required
+
+==> and for fault tolerance we can do replication, but that can lead to inconsistency when we have node failures.
+
+==> we can a an asynchronous log writing wherein service which is requesting will simply add all crud actions in a queue or kafka
+    and another service can pick this log and store on hard disk, so in case of failures we can simply read this log file from HD and re populate the inmemory hashtable
+
+==> to horizontal scale it we can use consistent hashing. and we can have coordinator service to decide which node entertains a certain request.
+    but This coordinator service can become a single point of failure so we can have a decentralized approach ,the  consistent hashing logic can sit in each and every nook just like Dynamo, DB .
+
+
+==> We can have a write through cash ,right back cash or right around cash . We won't be writing it to the cash instant but directly to the database and return the response.    
+    back - first to the db and than cache
+    through - first cache and than db(or db can be kept in sync asynchronously)
+
+==> A ttl can be configured according to the usage pattern

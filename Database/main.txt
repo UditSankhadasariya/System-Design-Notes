@@ -1,0 +1,54 @@
+==> indexes are mainly in the RAM
+
+==> since indexes are B-trees an insertion may trigger a rebalance. so when data size is very very big your insertions might become slow.(This will also impact the SSD)
+
+ideally insertions should be O(1). LSM tress are append only that insertino is directly at the end making it fast.
+
+==> ROW-oriented DB's -> tables are stored as rows in disk.
+        - a single block io read to the table fetches multiple rows with all theire cols.
+        - more IO's are rqeuired to find particular row in table scan, but once found can get all columns for that row.(no extra read required)
+        - disadvantge if you want to query only one filed, the etnire row will still be retrived from teh disk.
+        - select (*) is cheap
+        - all aggregate functions (sum,count etc) will also have unecessary reads of all the other columns as well.
+        
+
+
+==> Column oriented-DB =-> tables are stored as columns first in disk. EG. all first names are stored togeher cosecutively on the disk.        
+    - this can be very efficient when query needs to be done on single column, eg top 100 salaries etc.
+    - but here the rowids are duplicated in each value bcz we need to map whic entities are assigned to this salary etc.
+    - if one row needs to updated all columns need to be updated internally.
+    - sleect * would be very costly.
+    - They amazing for aggregations, usage in data lakes and warehouses.
+
+
+==> replication how masters can be in sync with the slaves. There are various techniques. one is the master will sendt the query as it is to the slaves. but we will be doing the exact same work in all the slaves that we have already done in the master.
+        - binary/streaming replication we will send the data that was changed in teh master to the slaves. but this is heavy on bandwidth.
+        - synchronous replication, we wil wait until all replicas have commited the latest write. this is when we require ACID very strongnly.(highly consistent)
+        
+
+==> size guide:-
+        int - 4 byte
+        bigInt - 8 byte
+        varcahr max - 65 Kb (65k characters)
+        date - 4 byte
+        dateTime - 8 byte
+
+==> whenever you want to do an atomic opertaion(swiggy example of incrementing favourties count of each restaurant live)
+        - you cannot just read, increment and update the value bcz of conurrent operations.
+        - we can use methods like add(dynamoDB) instead of set, bcz add is an atomic operation.
+
+
+==> GRAPH DB
+In a graph database, data is organized as a set of nodes and edges, where each node represents an entity and each edge represents a relationship between two nodes. This structure allows for fast and efficient querying of the data based on the relationships between the nodes.
+
+Graph databases are particularly useful for storing and querying data that has complex relationships, such as social networks, recommendation systems, and fraud detection. They are also used in applications that require real-time querying of highly-connected data, such as real-time fraud detection, recommendation systems and social networks.
+
+==> While designing a system, and when you are designing, the database always start with the ER diagram, then the access patterns.
+        Then dcide on the primary key, the secondary indexes and other stuff
+
+
+==============================================================================================================================
+
+write - ahead logging
+
+==> 

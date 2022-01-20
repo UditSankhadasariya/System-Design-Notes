@@ -1,0 +1,17 @@
+GPU programming
+GPU's are designed for high-performant parallel processing
+    - with very high throughput
+    - instead of gaming and stuff we would run high performing ML stuff on the hardware
+    - similar to map reduce, the computation can be broken down into smaller once and can be computed parallely,
+        and can be than aggregated to get the final result.
+    - and the splitting depends on the number of cores that are present in the CPU
+    - cpu generally has 4,8,16 cores while gpu can have 1000s of cores.
+    - remember not all computations are fast on gpu only task that can be done in parallel are eligible to be fast with an GPU.
+    - neural networks are the besat cnadidates for gpu, because they are emarassingly parallel(wkipedia for defination). all the tasks in neural network can be very very easily be done in parallel.
+    - bcz they are mostly independent of each other.
+    - CUDA has alot of libraries to help with which acts as an interface for the end users to make maximum use of the nvidia gpu.(for High performance computing).
+    - CUDNN, Cublas,tensorrt
+    - pytorch has the cuda libs by default, and no extra thing is required.
+    - with cuda computations can be slectivley carried out on cpu or the gpu.
+    - the hierarchy is
+    GTX hardware -> CUDA(interface) - Libraries(CDNN) - pytorch - Apps

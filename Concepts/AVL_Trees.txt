@@ -1,0 +1,60 @@
+==> max height of a tree can be n and min height can be logn
+
+==> to balance a tree we can do rotations around a node and max rotations are 3
+    - rotation is bascially think like node is a nail and you are pulling the branch from the shorter side. which can lead to a balance tree
+
+===============================================================================================================
+AVL trees
+==> we operate on a balance factor. and balance factor is given by abs(hieghtLeft - hieghtRight)
+    this difference should be either -1,0,1. we get any value apart from this than we need balancing.
+
+==> so if we get nodes that are imbalanced we do rotations to balance them.
+
+==> to balance a tree we need to know which was the node that created the unblancing. there can be 4 cases
+LL, LR, RR, RL (LL -> node added to the left child of the left child created the imbalance)
+
+- LR and RL require double balancing
+- for LL, RR just fix the node and do the right/left pulling/rotation and it will get balanced(we will fo right roatiaion for LL to make it balance).
+- for LR do a left rotation on the child node than do a right rotation on the current node.
+- LL while doing the rotation eg right rotation the right child of left parent will go as left child of right parent
+    - try to write an example of this, you will understand
+==> LR - shortcut instead of first doing left than right rotation just make the right child of the left child as root. and make curretn node as right child(write an example on papper.)    
+    - if they have further childrens than the right of left would be pulled up to the parent/root and its left and right would go as right and left of childs of the root.
+
+==> after an insertion if multiple nodes become imbalance than from the inserted node we will do the rotation on the first unbalanced ancestor.
+==> you only look at max 3 nodes to rotate hence two childs to check whteher LL,LR etc.
+since it can be unbalanced upto one level we say max height is 1.44logN
+
+
+
+===============================================================================================================
+Red-black tree
+==> redblack does not have that strict rules.
+==> AVL does alot of rotations, those are avoided to an extend in red black tree. 
+
+==>the TC worst avg best is O(logn) for AVL only disadvatnage is it may require alot of rotations, thats were RBT come in the picture
+
+==> avl is strictly balanced rbt is roughly balanced. hence search is faster in avl but insertion and deleteino is faster in RBT
+
+==> the max rebalacning required in rbt is 2 or either just a colour change
+
+
+------ properties of RBT
+==> every node is either red or black. root is always black.
+==> if the node is red than its children are black.
+==> every path to the descendant null node(leaf) from the root should have same black nodes.
+
+
+==> it satisfies the property that the longest path is always smaller than twice of its shortest path.
+
+alot of rules are required in a rbt insertion 
+a good video reference -> https://www.youtube.com/watch?v=qA02XWRTBdw&ab_channel=Jenny%27sLecturesCSIT
+
+RULES :-
+Check whether the tree is empty or not. If the tree is empty, then insert a new node and color it as Black. (Because Root Node must be always Black in color)’
+
+Otherwise if the Tree is not empty then insert the new node as a leaf node to the end and color it as Red.
+
+If the parent of the new node is Red and its neighbouring(parent’s) node is also Red then Flip the color of the both neighbour and Parent and Grandparents (If it is not Root Node Otherwise Flip the color of the Parent and neighbour only) i.e., Black.
+
+If the parent of the new node is Red and its neighbouring(parent’s) node is empty or NULL, then Rotate (either Left-Left or Left-Right rotation) the new node and parent.

@@ -1,0 +1,4 @@
+CRDT - conflict-free replicated data types.
+==> main technique to show concurrent operations on a thing. Collabarative editing tools google doc,figma, drawio etc.
+
+==>

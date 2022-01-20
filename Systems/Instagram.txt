@@ -1,0 +1,36 @@
+Features 
+- store and get images
+- like comment shrae postgres
+- have a news feeed
+- follow smeone
+
+==> images can simply be stored in file storage as it is cheaper and faster, and its corresponding urls would be stored in the 
+    post table that we have.
+
+ ==> from db perspective, we can just have like comment and post tables with corresponding foriegn and primary keys
+    If you want likes on a particular post instead of always doing select count *, you can store those counts in sperate tables 
+    likeTracker to avoid unecessary duplicate computations.
+
+==> The gateway can also act like a encapsulation to hide internal details, so it can accept all protocols like http, xmmp(socket) etc and internally it can conenct to ur services based on our custom protocols.
+
+==> we can services to fetch the userfeeds for a particular user id, apart from this we can also have services to fetch posts and followers of a particular user id, each of these can be independently scaled and we can introduce a loadblaancer before this to distribute the load accordingly using consistent hashing.
+
+==> for these use cases were we have to return some posts based on userid, it may require multiple joins and recmputing everytime can be costly, so we can precompute the user feed and return this as soon as the user requests for it.
+
+==> this can be done with event, so as soon someone post something it can send an event to the user feed service to add the post in the precomputed list.
+
+==> this precomputation can be stored in the cache of the service, and we can somehing like a LRU implementation to avoid memory outof bound. Also if due to some error if cache fails or syste is down, we can anyways by bruteforce compute the user feed instead of using the precomputed outputs.
+
+==> for notification you use polling but that would be costly in terms of battery as well as bandwidth, so we can pusht that from the server instead and we can use socket for this.
+
+==> if a celebrity posts a video, we can sedn push notification to millions of users, we can use batch processing here. 
+
+==> for notifcations we can also have a hybrid model, so for normal notificatinos we can have push model, but for celebrities etc we can have a pull model with a certain time limit(rate limit)
+
+==============================================================================================================================
+Social network
+--> for small use case we an have graph and bidirectional BFS
+
+
+
+

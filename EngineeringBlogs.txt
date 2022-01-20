@@ -1,0 +1,41 @@
+DISCORD
+- Around November 2015, we reached 100 million stored messages and at this time we started to see the expected issues appearing: the data and the index could no longer fit in RAM and latencies started to become unpredictable.
+- R/W ratio 50/50. 
+
+-Next we defined our requirements:
+
+Linear scalability — We do not want to reconsider the solution later or manually re-shard the data.
+Automatic failover — We love sleeping at night and build Discord to self heal as much as possible.
+Low maintenance — It should just work once we set it up. We should only have to add more nodes as data grows.
+Proven to work — We love trying out new technology, but not too new.
+Predictable performance — We have alerts go off when our API’s response time 95th percentile goes above 80ms. We also do not want to have to cache messages in Redis or Memcached.
+Not a blob store — Writing thousands of messages per second would not work great if we had to constantly deserialize blobs and append to them.
+Open source — We believe in controlling our own destiny and don’t want to depend on a third party company.
+
+- Cassandra was the only database that fulfilled all of our requirements. We can just add nodes to scale it and it can tolerate a loss of nodes without any impact on the application.
+
+Luckily every ID on Discord is actually a Snowflake (chronologically sortable), so we were able to use them instead. 
+
+SNOWFLAKE = randomly generated ID which sorted in nature some gist:-
+Our requirements for this system were pretty simple, yet demanding:
+
+We needed something that could generate tens of thousands of ids per second in a highly available manner. This naturally led us to choose an uncoordinated approach.
+
+These ids need to be roughly sortable, meaning that if tweets A and B are posted around the same time, they should have ids in close proximity to one another since this is how we and most Twitter clients sort tweets.[1]
+
+Additionally, these numbers have to fit into 64 bits.
+To generate the roughly-sorted 64 bit ids in an uncoordinated manner, we settled on a composition of: timestamp, worker number and sequence number.
+
+Sequence numbers are per-thread and worker numbers are chosen at startup via zookeeper (though that’s overridable via a config file).
+
+==============================================================================================================================
+Linkedin
+Facebook seems to use a graph data store layer called Tao, which is ultimately stored by MySQL databases. See: Facebook Engineering: Is Facebook Graph actually backed by a graph database?
+
+Twitter seems to use a graph database called FlockDB (again, backended by MySQL). FlockDB has been open-sourced but it's quite specialised, being best suited for applications where processing is localised, i.e. where you care more about adjacency lists than traversals. See: Introducing FlockDB | Twitter Blogs
+
+LinkedIn also seem to have built their own database, which they call GraphDB. See: Optimizing Linux Memory Management for Low-latency / High-throughput Databases | LinkedIn Engineering 
+
+So, the social network giants (and Google) have all created their own graph database implementations as they've grown. Which might be why some still use relational databases as the underlying data store: it's what they started off using, and they were able to build graph abstractions on top of it to help them scale.
+
+If you were starting from scratch however, and wanted to store connected data, there's now plenty of ready-made implementations choose from, both open and proprietary, for a wide variety of environments. See Wikipedia's list of Graph databases
