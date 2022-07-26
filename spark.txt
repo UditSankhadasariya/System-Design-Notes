@@ -1,0 +1,30 @@
+=> for map reduce we just have a strict process, map and than reduce.
+
+==> main use case process large volumes of data.
+
+==> we have a driver node and many worker nodes. driver is kind of the master which sends instructions to all the workers. there are alot of extra functions ratehr than just map and reduce.
+
+==> RDD - Resilient distributed dataset, each rdd will have subset of data and computations can be done parallely on this rdd's.
+    - these rdd's are partitinoed across different nodes and clusters and computaion can be done on the same time.
+    - Rdd is immutable collection of objects.
+    - it is fault tolerance
+    - this rdd are formed by lazy evaluation
+    - frequent rdd's can be cached.
+    - internally inside and rdd data is stored in paritions.
+    
+
+
+==> tehre are tow main things that can be done on rdd's transformation and actions.
+    - transformation we will get one or more new rdd as output after doing some transformation.
+    - transformations are lazy operations. until actions are not performed no transformation is executed. it is lazy evaluation.
+    - action is basically the final result of the rdd computation. it performs all the intermediate transformations,jobs andf finally reutrns to the driver program.
+    - actions eg: first, take, reduce, collectm count etc.
+    - and since this transformatins are lazy they are implemnted using dag to have falut tolerance.
+
+
+==>  internal arch is basically master slave arch.
+
+==>- narrow transformations - simple map like operations(Filter,sample,union)
+    - wide transformations - eg.reducebyKey (join,intersection etc.)
+
+
