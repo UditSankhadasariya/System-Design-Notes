@@ -1,0 +1,17 @@
+ ==> in a computer we have resources in the form of CPU memory GPU disk. We cannot let every application, Take whatever it needs. Hence, we need a central unit which should manage this allocations for us. This is where operating system comes into play.
+
+ ==> It acts as an interface between the raw hardware and our applications, which are built on that, and it is also responsible for isolation and protection
+
+ ==> GOALS of OS:
+    max cpu utilizzation
+    process starvation should not happen
+    priority exectuiotn should be supported.
+
+==>OS types:
+    - single process(only single process is supported at a particular point of time)    
+    - Multi programming OS(multiple jobs or programs sit in the queue and if any of the process is in awaiting state, then CPU takes in the next job and the state of the previous process is to saved in a PCB which is called the process control block)
+    - Multi tasking OS(this is basically a logical extension of the above OS here we do not explicitly wait for our program to wait for some kind of iO or something here we have a time quantum based on which if the process has exceeded the time quantum we will hold back process and take on the next process)
+    - Multi processign OS(apart from features like context, switching and time sharing this type of OS supports more than one CPU)
+    - Distributed operating system - this is the kind of operating system, which would have multiple CPO's multiple memories which are present on different different machines. This is what cloud providers would have.
+    - RTOS(Real time operating system this is the kind of operating system where are you Don't have any scope for error and the processing of the jobs and everything should be lightning fast for example, air traffic control system should have this kind of OOS.)
+    - 
