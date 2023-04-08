@@ -1,0 +1,36 @@
+==> before, jumping directly into the high-level design, always do the back of the envelope calculations first
+
+==> do not spend a lot of time just quickly go through the numbers and jump to the design
+
+==>keep the assumption values simple as possible.
+
+cheat sheet
+- everything is in multiple of 3's
+NO. OF ZEROES	TRAFFIC 	STORAGE
+3	            THOUSANDS	KB
+6	            MILLION	    MB
+9	            BILLION	    GB
+12	            TRILLION	TB
+15	            quadrillion	PB
+
+
+
+- for data types
+char -> ascii - 1 byte
+        unicode - 2 bytes
+int/long -> 8 bytes
+image avg size -> 300 Kb
+
+==> for finding per second count from daily count we will divide by (24*60*60) -> 86400 we can approximate this to 1 lakh -> 10^5
+
+==> 1month has 2.5 million seconds
+
+==> 1B rqe per month is 400 req per second
+
+==> PERCENTILES :-  if we have 1 million requests as test data, than min.max,avg wont give us the perfect picture of whats happening,
+ thats were percentile comes in.
+        - avg is not a good metric bcz some outliers(extreme large values) can ruin your avg.
+        - if we say 95th percentile is 30ms means 95% of requests are below 30ms.
+        - to calculoate that, just sort it and the check the index wrt to percentage(eg for 10 items 75th percenetile would be at index 7.5 ~ 8 so whatever is at 8th index we would conclude that all 75% values are lesser than 75th percetile)
+        
+
